@@ -1,5 +1,30 @@
 # Apollo guide
 
+Assorted guides on using the Apollo cluster at the London Centre for Nanotechnology. Contributions welcome, especially from those who use Windows.
+
+## Login
+To login, run
+```
+ssh <lcn-username>@apollo.lcn.ucl.ac.uk
+```
+from a linux machine. For example, you may need to first `ssh` into one of the linux workstations before you can `ssh` into apollo. To automate this, add 
+```
+Host apollo
+    User <linux-username>
+    HostName apollo.lcn.ucl.ac.uk
+    ProxyJump <your-workstation>
+
+Host <your-workstation>
+    User <linux-username>
+    HostName <your-workstation>.phys.ucl.ac.uk
+    ProxyJump gateway
+
+Host gateway
+    User <ucl-username>
+    HostName ssh-gateway.ucl.ac.uk
+```
+to you `~/.ssh/config` file on your local computer. Now you should be able to use `ssh apollo` to directly login to Apollo. Note you will be asked to enter passwords multiple times, and the password and username used for `gateway` is your UCL username and password, whereas the other two will be your *linux* username and password. If you do not want to add enter your password then you can authenticate using SSH keys by following the guide at the bottom of [this page](https://www.rc.ucl.ac.uk/docs/Remote_Access/). I found this to be only somewhat reliable, but usually cuts out at least two of the three password entries. 
+
 ## XMDS
 This section will walk you through building XMDS as user. This guide has been adapted from [the documentation](http://www.xmds.org/installation.html).
 ### Loading and installing prerequisites
