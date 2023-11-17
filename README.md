@@ -1,6 +1,6 @@
 # Apollo guide
 
-## Installing XMDS
+## XMDS
 This section will walk you through building XMDS as user. This guide has been adapted from [the documentation](http://www.xmds.org/installation.html).
 ### Loading and installing prerequisites
 1.  **FFTW, MPI, MLK** and a **C++ compiler**. To load these, do 
@@ -53,7 +53,7 @@ to your `~/.bashrc` to prepend each `.local` directory to the appropriate list t
 source ~/.bashrc
 ```
 to reload this file. If you use a different directory for this then you can ignore this part as you probably know what you are doing. 
-### Install XMDS
+### Build XMDS
   1. Download the [XMDS source code](https://sourceforge.net/projects/xmds/) then move and extract it on Apollo as you did with HDF5. 
   2. Move into this directory containing the source code and run
 	  ```bash
@@ -65,7 +65,7 @@ to reload this file. If you use a different directory for this then you can igno
 
 4. Run `xmds2 --reconfigure` and hopefully everything is in order!
 
-## Installing Julia
+## Julia
 
 As with everything regarding Julia, the installation is straightforward. Simply download and install [`juliaup`](https://github.com/JuliaLang/juliaup) by running
 ```bash
