@@ -132,8 +132,20 @@ to reload this file. If you use a different directory for this then you can igno
 
 ## Julia
 
+### Installation
+
 As with everything regarding Julia, the installation is straightforward. Simply download and install [`juliaup`](https://github.com/JuliaLang/juliaup) by running
 ```bash
 curl -fsSL https://install.julialang.org | sh
 ```
 This should install the latest version of Julia as well as the `juliaup` version multiplexer. 
+
+### Julia on the GPU
+When loading the `CUDA` package, Julia will attempt to download a suitable version of the CUDA toolkit based on the devices it finds. The problem is that nodes do not have internet access, so this fails. As such, we must tell Julia to use locally installed CUDA toolkit. This can be done by launching a Julia REPL and executing  
+```julia
+julia> using CUDA
+julia> CUDA.set_runtime_version!(v"12.2"; local_toolkit=true)
+```
+This will create a file named `LocalPreferences.toml` in the working directory. It is not strictly necessary to pass the version CUDA runtime version to this function, however it allows packages to precompile and may be required for some. The version passed should match the CUDA runtime version on the node which at the time of writing was `12.2`.
+
+
