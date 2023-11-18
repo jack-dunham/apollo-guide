@@ -1,11 +1,13 @@
 # Apollo guide
 
 Assorted guides on using the Apollo cluster at the London Centre for Nanotechnology. Contributions welcome, especially from those who use Windows.
+>[!IMPORTANT]
+>You should first read the manual by executing `man apollo`.
 
 ## Login
 To login, run
 ```
-ssh <lcn-username>@apollo.lcn.ucl.ac.uk
+ssh <linux-username>@apollo.lcn.ucl.ac.uk
 ```
 from a linux machine. For example, you may need to first `ssh` into one of the linux workstations before you can `ssh` into apollo. To automate this, add 
 ```
@@ -23,7 +25,45 @@ Host gateway
     User <ucl-username>
     HostName ssh-gateway.ucl.ac.uk
 ```
-to you `~/.ssh/config` file on your local computer. Now you should be able to use `ssh apollo` to directly login to Apollo. Note you will be asked to enter passwords multiple times, and the password and username used for `gateway` is your UCL username and password, whereas the other two will be your *linux* username and password. If you do not want to add enter your password then you can authenticate using SSH keys by following the guide at the bottom of [this page](https://www.rc.ucl.ac.uk/docs/Remote_Access/). I found this to be only somewhat reliable, but usually cuts out at least two of the three password entries. 
+to you `~/.ssh/config` file on your local computer. Now you should be able to use `ssh apollo` to directly login to Apollo. Note you will be asked to enter passwords multiple times, and the password and username used for `gateway` is your UCL username and password, whereas the other two will be your *linux* username and password. If you do not want to add enter your password then you can authenticate using SSH keys by following the guide at the bottom of [this page](https://www.rc.ucl.ac.uk/docs/Remote_Access/). I found this to be only somewhat reliable, but usually cuts out at least two of the three password entries. Alternatively, one can login via galaxy
+```
+Host apollo
+    User <linux-username>
+    HostName apollo.lcn.ucl.ac.uk
+    ProxyJump galaxy.lcn.ucl.ac.uk
+```
+which also works outside of the network. 
+
+## Submitting jobs
+Jobs can be queued using a jobscript and the `qsub` command. Options can be provided to the command directly or put into the jobscript. For example
+```bash
+#!/bin/bash -f     
+# ---------------------------
+#$ -M <my-email-address>            
+#$ -m be
+#$ -V
+#$ -cwd
+#$ -N main
+#$ -S /bin/bash
+#$ -l vf=600M   
+#$ -pe ompi-local 40
+#$ -q I_40T_64G_GPU.q            
+#
+echo "Got ${NSLOTS} slots."
+IPWD=`pwd`
+echo "in ${IPWD}"
+nsys launch --wait=primary --trace=cuda,nvtx julia --project -g2 -t auto main.jl        
+exit 0    
+```
+passes the options listed on the lines starting with `#$` to `qsub`, and executes the bash commands in the body. Use `qsub -help` to list all the options available. 
+>[!IMPORTANT]
+>You should check `man apollo` for an explanation on how to set the `-l` and `-pe` options. Setting these incorrectly can cause the job to sit in the queue eternally. 
+
+This particular jobscript executes
+```
+julia --project -g2 -t auto main.jl
+```
+under the Nvidia NSight Systems GPU profiler found in the `apps/nvhpc` module. Assuming this script is called `submit.sh`, to queue the job I would first load the required modules using `module load apps/nvhpc` and then run `qsub submit.sh` to submit to the `I_40T_64G_GPU.q` queue. 
 
 ## XMDS
 This section will walk you through building XMDS as user. This guide has been adapted from [the documentation](http://www.xmds.org/installation.html).
