@@ -30,7 +30,7 @@ to you `~/.ssh/config` file on your local computer. Now you should be able to us
 Host apollo
     User <linux-username>
     HostName apollo.lcn.ucl.ac.uk
-    ProxyJump galaxy.lcn.ucl.ac.uk
+    ProxyJump <linux-username>@galaxy.lcn.ucl.ac.uk
 ```
 which also works outside of the network. 
 
