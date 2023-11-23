@@ -111,6 +111,7 @@ If you followed the above steps to install HDF5, then you should have some files
 ```bash
 export PATH=$HOME/.local/bin:$PATH
 export LIBRARY_PATH=$HOME/.local/lib:$LIBRARY_PATH
+export LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH
 export INCLUDE_PATH=$HOME/.local/include:$INCLUDE_PATH
 ```
 to your `~/.bashrc` to prepend each `.local` directory to the appropriate list that should be searched. You should now run
@@ -128,7 +129,10 @@ to reload this file. If you use a different directory for this then you can igno
 
 3. Run `make` to compile the Cheetah templates.
 
-4. Run `xmds2 --reconfigure` and hopefully everything is in order!
+4. Run `xmds2 --reconfigure` and hopefully everything is in order! If it still cant find HDF5 try:
+   ```bash
+   xmds2 --reconfigure --include-path $HOME/.local/include/ --lib-path $HOME/.local/lib/
+   ```
 
 ## Julia
 
