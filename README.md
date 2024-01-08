@@ -152,4 +152,10 @@ julia> CUDA.set_runtime_version!(v"12.2"; local_toolkit=true)
 ```
 This will create a file named `LocalPreferences.toml` in the working directory. It is not strictly necessary to pass the version CUDA runtime version to this function, however it allows packages to precompile and may be required for some. The version passed should match the CUDA runtime version on the node which at the time of writing was `12.2`.
 
+### Adding private Github packages using Pkg
+If you wish to add a private repo to your environment using Pkg, the easiest way to authenticate is via the [Github CLI](https://cli.github.com). First install this and follow through with the configuration, and then make sure the following environment is set whenever you wish to `add` a private github repo:
+```bash
+export JULIA_PKG_USE_CLI_GIT=true
+```
+
 
